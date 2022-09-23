@@ -6,9 +6,16 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export default function BuyScreen() {
+  const nav = useNavigation();
+  useLayoutEffect(() => {
+    nav.setOptions({
+      headerShown: false,
+    });
+  }, []);
   const book = {
     title: "Nguyên hàm và tích phân ứng dụng",
     price: 148000,
