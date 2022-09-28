@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -12,49 +12,63 @@ import {
   QuestionMarkCircleIcon,
   ChevronRightIcon,
 } from "react-native-heroicons/outline";
-const phoneData = {
-  colors: [
-    {
-      imgLink: "../assets/vsmart_live_xanh_1.png",
-      colorName: "Xanh Nước Biển",
-      color: "#234896",
-    },
-    {
-      imgLink: "../assets/vs_red_a_2.png",
-      colorName: "Đỏ",
-      color: "#F30D0D",
-    },
-    {
-      imgLink: "../assets/vsmart_black_start_1.png",
-      colorName: "Đen",
-      color: "#000",
-    },
-    {
-      imgLink: "../assets/vs_bac_1.png",
-      colorName: "Bạc",
-      color: "#C5F1FB",
-    },
-  ],
-  name: "Điện thoại Vsmart Joy 3 - Hàng chính hãng",
-  discount: 0,
-  price: 1790000,
-};
-function DetailScreen() {
+
+function DetailScreen({ route }) {
   const nav = useNavigation();
   useLayoutEffect(() => {
     nav.setOptions({
       headerShown: true,
     });
   }, []);
+  const [phone, setPhone] = useState({
+    colors: [
+      {
+        imgLink: require("../assets/vsmart_live_xanh_1.png"),
+        colorName: "Xanh Nước Biển",
+        color: "#234896",
+        price: 1790000,
+      },
+      {
+        imgLink: require("../assets/vs_red_a_2.png"),
+        colorName: "Đỏ",
+
+        color: "#F30D0D",
+        price: 1780000,
+      },
+      {
+        imgLink: require("../assets/vsmart_black_star_1.png"),
+        colorName: "Đen",
+        color: "#000",
+        price: 1820000,
+      },
+      {
+        imgLink: require("../assets/vs_bac_1.png"),
+        colorName: "Bạc",
+        color: "#C5F1FB",
+        price: 1800000,
+      },
+    ],
+    selectedColor: {
+      imgLink: require("../assets/vsmart_live_xanh_1.png"),
+      colorName: "Xanh Nước Biển",
+      color: "#234896",
+      price: 1790000,
+    },
+    producer: "Tiki Traiding",
+    name: "Điện thoại Vsmart Joy 3 - Hàng chính hãng",
+    discount: 0,
+    price: 1790000,
+  });
+  useEffect(() => {
+    if (route.params) setPhone(route.params);
+  }, [route.params]);
   return (
     <SafeAreaView className="flex-1 bg-white p-3 justify-between">
-      <View className="justify-center items-center ">
-        <Image source={require("../assets/vsmart_live_xanh_1.png")} />
+      <View className="justify-center items-center">
+        <Image className="h-80 w-72" source={phone.selectedColor.imgLink} />
       </View>
       <View className="flex-[0.6] justify-between">
-        <Text className="text-black text-lg">
-          Điện thoại Vsmart Joy 3 - Hàng chính hãng
-        </Text>
+        <Text className="text-black text-lg">{phone.name}</Text>
         <View className="flex-row items-center">
           <View className="flex-row">
             <StarIcon color="yellow" size={30} />
@@ -66,9 +80,9 @@ function DetailScreen() {
           <Text>(Xem 828 đánh giá)</Text>
         </View>
         <View className="flex-row items-center">
-          <Text className="text-black text-xl font-bold">1.790.000đ</Text>
+          <Text className="text-black text-xl font-bold">{phone.price}đ</Text>
           <Text className="line-through text-gray-300 font-bold text-lg pl-5">
-            1.790.000đ
+            {phone.selectedColor.price}
           </Text>
         </View>
         <View className="flex-row items-center">
@@ -82,7 +96,7 @@ function DetailScreen() {
           className="flex-row border py-2 rounded-lg justify-center items-center"
         >
           <Text className="flex-1 text-black text-xl uppercase text-center">
-            4 Màu - chọn màu
+            {phone.colors.length} Màu - chọn màu
           </Text>
           <ChevronRightIcon color={"black"} size={20} />
         </TouchableOpacity>
